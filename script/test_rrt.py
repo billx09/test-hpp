@@ -55,9 +55,26 @@ if res [0]:
 else:
     raise RuntimeError ("Failed to apply constraint.")
 
-ps.setInitialConfig (q1proj)
-ps.addGoalConfig (q2proj)
-ps.solve ()
+ps.selectPathOptimizer ("None")
+import datetime as dt
+totalTime = dt.timedelta (0)
+totalNumberNodes = 0
+for i in range (20):
+    ps.client.problem.clearRoadmap ()
+    ps.resetGoalConfigs ()
+    ps.setInitialConfig (q1proj)
+    ps.addGoalConfig (q2proj)
+    t1 = dt.datetime.now ()
+    ps.solve ()
+    t2 = dt.datetime.now ()
+    totalTime += t2 - t1
+    print (t2-t1)
+    n = len (ps.client.problem.nodes ())
+    totalNumberNodes += n
+    print ("Number nodes: " + str(n))
+
+print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/20.))
+print ("Average number nodes: " + str (totalNumberNodes/20.))
 
 pp = PathPlayer (cl, r)
 pp (1)
