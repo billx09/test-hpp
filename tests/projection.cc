@@ -485,7 +485,7 @@ namespace svd {
     }
   }
 
-  unsigned int project (SVDTest* cp, ResultVector& results)
+  size_t project (SVDTest* cp, ResultVector& results)
   {
     MESSAGE_INF ("Start " << results.size() << " projections...");
     size_t failCount = 0;
@@ -518,7 +518,7 @@ namespace svd {
     shootConfig (results, &bcs);
 
     for (size_t i = 0; i < cp.size (); i++) {
-      unsigned int f = project (cp[i], results);
+      std::size_t f = project (cp[i], results);
 
       if (f > 0) {
         MESSAGE_ERR ("----------------------------------------------------------");
