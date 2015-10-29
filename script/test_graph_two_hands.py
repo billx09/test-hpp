@@ -70,7 +70,7 @@ from hpp.corbaserver.manipulation import ConstraintGraph
 cg = ConstraintGraph (robot, 'graph')
 
 robot.client.manipulation.problem.createPlacementConstraint (
-  'box_placement', 'box/base_joint_SO3', 'box/box_surface', 'kitchen_area/pancake_table_table_top')
+  'box_placement', 'box/box_surface', 'kitchen_area/pancake_table_table_top')
 
 jointNames = dict ()
 jointNames['all'] = robot.getJointNames ()
