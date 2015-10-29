@@ -145,45 +145,49 @@ cg.createNode (['both', 'right', 'left', 'free'])
 cg.setConstraints (node='free', numConstraints=['box_placement'])
 
 # Right hand {{{4
-cg.setConstraints (node='right', grasp='r_grasp')
+cg.setConstraints (node='right', grasps=['r_grasp'])
 
 cg.createWaypointEdge ('free', 'right', 'r_grasp', nb=1, weight=10)
 
 cg.setConstraints (edge='r_grasp_e1', lockDof = lockbox)
-cg.setConstraints (node='r_grasp_n0', pregrasp = 'r_pregrasp')
+cg.setConstraints (node='r_grasp_n0', pregrasps = ['r_pregrasp'])
 cg.setConstraints (edge='r_grasp_e0', lockDof = lockbox)
 # 4}}}
 
 # Left hand {{{4
-cg.setConstraints (node = 'left', grasp = 'l_grasp')
+cg.setConstraints (node = 'left', grasps = ['l_grasp'])
 
 cg.createWaypointEdge ('free', 'left', 'l_grasp', 1, 10)
 
 cg.setConstraints (edge='l_grasp_e1', lockDof = lockbox)
-cg.setConstraints (node='l_grasp_n0', pregrasp = 'l_pregrasp')
+cg.setConstraints (node='l_grasp_n0', pregrasps = ['l_pregrasp'])
 cg.setConstraints (edge='l_grasp_e0', lockDof = lockbox)
 # 4}}}
 
 # Both hands {{{4
-cg.setConstraints (node='both', grasp = ['l_grasp', 'r_grasp'])
+cg.setConstraints (node='both', grasps = ['l_grasp', 'r_grasp'])
 
 cg.createWaypointEdge ('both', 'right', 'b_l_ungrasp', 1, 1)
 
 cg.createWaypointEdge ('right', 'both', 'b_l_grasp', 1, 10)
 
-cg.setConstraints (node='b_l_ungrasp_n0', grasp = 'r_grasp', pregrasp = 'l_pregrasp')
+cg.setConstraints (node='b_l_ungrasp_n0', grasps = ['r_grasp'],
+                   pregrasps = ['l_pregrasp'])
 cg.setConstraints (edge='b_l_ungrasp_e0', lockDof = lockbox)
 cg.setConstraints (edge='b_l_grasp_e1', lockDof = lockbox)
-cg.setConstraints (node='b_l_grasp_n0', grasp = 'r_grasp', pregrasp = 'l_pregrasp')
+cg.setConstraints (node='b_l_grasp_n0', grasps = ['r_grasp'],
+                   pregrasps = ['l_pregrasp'])
 
 cg.createWaypointEdge ('both', 'left', 'b_r_ungrasp', 1, 1)
 
 cg.createWaypointEdge ('left', 'both', 'b_r_grasp', 1, 10)
 
-cg.setConstraints (node='b_r_ungrasp_n0', grasp = 'l_grasp', pregrasp = 'r_pregrasp')
+cg.setConstraints (node='b_r_ungrasp_n0', grasps = ['l_grasp'],
+                   pregrasps = ['r_pregrasp'])
 cg.setConstraints (edge='b_r_ungrasp_e0', lockDof = lockbox)
 cg.setConstraints (edge='b_r_grasp_e1', lockDof = lockbox)
-cg.setConstraints (node='b_r_grasp_n0', grasp = 'l_grasp', pregrasp = 'r_pregrasp')
+cg.setConstraints (node='b_r_grasp_n0', grasps = ['l_grasp'],
+                   pregrasps = ['r_pregrasp'])
 # 4}}}
 
 # Loops {{{4
