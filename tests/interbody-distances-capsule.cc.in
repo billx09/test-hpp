@@ -182,8 +182,6 @@ BOOST_AUTO_TEST_CASE (interbody_distances_capsule)
   using hpp::model::Device;
   using hpp::model::Joint;
   using hpp::model::Body;
-  typedef hpp::model::ObjectVector_t ObjectVector_t;
-  typedef hpp::model::JointVector_t JointVector_t;
   typedef std::vector<double> vector_t;
   std::ifstream fileConfig;
   std::ofstream fileHrp2;

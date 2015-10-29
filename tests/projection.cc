@@ -51,6 +51,7 @@ using namespace boost::accumulators;
 using hpp::model::Device;
 using hpp::model::DevicePtr_t;
 using hpp::model::JointPtr_t;
+using hpp::core::ConfigurationShooterPtr_t;
 using hpp::core::DifferentiableFunctionPtr_t;
 using hpp::core::NumericalConstraint;
 using hpp::core::NumericalConstraintPtr_t;
@@ -59,6 +60,7 @@ using hpp::core::ConstraintPtr_t;
 using hpp::core::ConfigProjector;
 using hpp::core::ConfigProjectorPtr_t;
 using hpp::core::BasicConfigurationShooter;
+using hpp::core::BasicConfigurationShooterPtr_t;
 using hpp::core::ConfigurationShooter;
 using hpp::core::Configuration_t;
 using hpp::core::ConfigurationOut_t;
@@ -169,7 +171,7 @@ namespace projection {
   typedef std::vector <Result> ResultVector;
   typedef accumulator_set <double, stats<tag::variance> > Accumulator;
 
-  void shootConfig (ResultVector& results, ConfigurationShooter* cs)
+  void shootConfig (ResultVector& results, ConfigurationShooterPtr_t cs)
   {
     ConfigurationPtr_t cfg;
     for (size_t i = 0; i < results.size (); i++) {
@@ -200,7 +202,8 @@ namespace projection {
 
     using hpp_test::functionSets;
     DevicePtr_t robot = hpp_test::robot;
-    BasicConfigurationShooter bcs (robot);
+    BasicConfigurationShooterPtr_t bcs (BasicConfigurationShooter::create
+					(robot));
 
     std::vector <ConfigProjectorPtr_t> cp;
     for (size_t i = 0; i < functionSets.size(); i++) {
@@ -212,7 +215,7 @@ namespace projection {
 
     Accumulator acc;
     std::vector <Result> results (NB_TRIES);
-    shootConfig (results, &bcs);
+    shootConfig (results, bcs);
 
     for (size_t i = 0; i < cp.size (); i++) {
       acc = Accumulator ();
@@ -476,7 +479,7 @@ namespace svd {
   };
   typedef std::vector <Result> ResultVector;
 
-  void shootConfig (ResultVector& results, ConfigurationShooter* cs)
+  void shootConfig (ResultVector& results, ConfigurationShooterPtr_t cs)
   {
     ConfigurationPtr_t cfg;
     for (size_t i = 0; i < results.size (); i++) {
@@ -485,7 +488,7 @@ namespace svd {
     }
   }
 
-  unsigned int project (SVDTest* cp, ResultVector& results)
+  size_t project (SVDTest* cp, ResultVector& results)
   {
     MESSAGE_INF ("Start " << results.size() << " projections...");
     size_t failCount = 0;
@@ -503,7 +506,8 @@ namespace svd {
 
     /// Create the robot
     DevicePtr_t robot = hpp_test::robot;
-    BasicConfigurationShooter bcs (robot);
+    BasicConfigurationShooterPtr_t bcs (BasicConfigurationShooter::create
+					(robot));
     using hpp_test::functionSets;
 
     std::vector <SVDTest*> cp;
@@ -515,10 +519,10 @@ namespace svd {
     MESSAGE_INF ("There are " << cp.size() << " SVDTest to be tested.");
 
     std::vector <Result> results (NB_TRIES);
-    shootConfig (results, &bcs);
+    shootConfig (results, bcs);
 
     for (size_t i = 0; i < cp.size (); i++) {
-      unsigned int f = project (cp[i], results);
+      std::size_t f = project (cp[i], results);
 
       if (f > 0) {
         MESSAGE_ERR ("----------------------------------------------------------");
@@ -566,7 +570,7 @@ namespace shuffle {
   typedef std::vector <Result> ResultVector;
   typedef accumulator_set <double, stats<tag::variance> > Accumulator;
 
-  void shootConfig (ResultVector& results, ConfigurationShooter* cs)
+  void shootConfig (ResultVector& results, ConfigurationShooterPtr_t cs)
   {
     ConfigurationPtr_t cfg;
     for (size_t i = 0; i < results.size (); i++) {
@@ -614,7 +618,8 @@ namespace shuffle {
 
     /// Create the robot
     DevicePtr_t robot = hpp_test::robot;
-    BasicConfigurationShooter bcs (robot);
+    BasicConfigurationShooterPtr_t bcs (BasicConfigurationShooter::create
+					(robot));
     using hpp_test::functionSets;
 
     std::vector <ConfigProjectorPtr_t> cp;
@@ -628,7 +633,7 @@ namespace shuffle {
     MESSAGE_INF ("There are " << cp.size() << " ConfigProjector to be tested.");
 
     std::vector <Result> results (NB_TRIES);
-    shootConfig (results, &bcs);
+    shootConfig (results, bcs);
 
     for (size_t i = 0; i < results.size (); i++) {
       Accumulator acc;
