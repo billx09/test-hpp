@@ -138,6 +138,10 @@ robot.client.manipulation.problem.createPlacementConstraint (
   'box2_on_table', 'box2/box_surface', 'table/pancake_table_table_top')
 robot.client.manipulation.problem.createPrePlacementConstraint (
   'pre_box2_on_table', 'box2/box_surface', 'table/pancake_table_table_top', 0.05)
+robot.client.manipulation.problem.createPlacementConstraint (
+  'box2_on_box1', 'box1/box_surface', 'box2/box_surface')
+robot.client.manipulation.problem.createPrePlacementConstraint (
+  'pre_box2_on_box1', 'box1/box_surface', 'box2/box_surface')
 # 4}}}
 
 # Locks joints that are not used for this problem {{{4
