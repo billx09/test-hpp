@@ -7,7 +7,7 @@ from hpp.corbaserver.wholebody_step import Client as WSClient
 from hpp.corbaserver.wholebody_step import Problem
 from hpp.corbaserver.hrp2 import Robot
 from hpp.gepetto import ViewerFactory
-
+import time
 
 Robot.urdfSuffix = '_capsule'
 Robot.srdfSuffix = '_capsule'
@@ -28,25 +28,25 @@ balanceConstraints = [constraintName + "/relative-com",
                       constraintName + "/orientation-left-foot",
                       constraintName + "/position-left-foot"]
 c2name = "stability"
-wcl.problem.addStabilityConstraints (c2name, q0, robot.leftAnkle,
-                                     robot.rightAnkle, "", Problem.ALIGNED_COM)
+wcl.problem.addStaticStabilityConstraints (c2name, q0, robot.leftAnkle,
+                                           robot.rightAnkle, "", Problem.SLIDING_ALIGNED_COM)
 b2C = [ c2name + "/com-between-feet",
-        c2name + "/orientation-right",
-        c2name + "/orientation-left",
-        c2name + "/position-right",
-        c2name + "/position-left"]
+        c2name + "/pose-right-foot",
+        c2name + "/pose-left-foot",]
 
-robot.setJointBounds ("base_joint_xyz", [-4,4,-4,4,-4,4])
+robot.setJointBounds ("root_joint", [-4,4,-4,4,-4,4,0,-1,0,-1,0,-1,0,-1])
 
 def testConstraint (constraints, nbIter = 100):
   success = 0
   p.resetConstraints ()
   p.setNumericalConstraints ('test', constraints)
+  start = time.time()
   for i in range (nbIter):
     res = p.applyConstraints (robot.shootRandomConfig ())
     if res[0]:
       success = success + 1
-  print "Constraint ", constraints, " succeeds ", success * 100 / nbIter, " %"
+  end = time.time()
+  print "Constraint ", constraints, " succeeds ", success * 100 / nbIter, " % in ", end - start
 
 for constraint in balanceConstraints:
   testConstraint ([constraint])
